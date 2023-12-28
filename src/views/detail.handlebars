@@ -11,10 +11,10 @@
                 <p>Codigo: {{producto.code}}</p>
                 <p>Stock: {{producto.stock}}</p>
                 <p>Activo: {{producto.status}}</p>
-                <button class="btn btn-outline-success" data-id={{producto._id}}>Agregar al carrito</button>
-                {{#if canDelete}}
-                <button id="deleteProduct">Eliminar producto</button>
-                {{/if}}
+                <button class="btn btn-outline-success addToCart" data-id={{producto._id}}>Agregar al carrito</button>
+                
+                <button class="btn btn-outline-success deleteProduct" data-id={{producto._id}}>Eliminar producto</button>
+           
             </div>
             {{else}}
             <h2>No Existe el producto</h2>
