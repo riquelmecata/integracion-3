@@ -12,6 +12,9 @@
                 <p>Stock: {{producto.stock}}</p>
                 <p>Activo: {{producto.status}}</p>
                 <button class="btn btn-outline-success" data-id={{producto._id}}>Agregar al carrito</button>
+                {{#if canDelete}}
+                <button id="deleteProduct">Eliminar producto</button>
+                {{/if}}
             </div>
             {{else}}
             <h2>No Existe el producto</h2>
@@ -20,4 +23,4 @@
     </div>
 </div>
 
-<script src="/js/index.js"></script>
+<script src="/js/product.js"></script>

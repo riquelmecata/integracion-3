@@ -14,16 +14,14 @@ import { confirmEmailTemplate } from "../mailer/templates/confirmRegister.js"
 passport.use("login", new LocalStrategy({
     usernameField: "email",
     passReqToCallback: true
-},
-async (req, email, password, done) => {
+}, async (req, email, password, done) => {
     try {
         let finded = await dbM.findUserByEmail(email?.toString().toLowerCase())
 
         if (!finded.success) done(null, false)
         let user = JSON.parse(JSON.stringify(finded.success))
         if (bcrypt.compareSync(password, user.password)) {
-            console.log('Usuario autenticado:', user); // Agregar log del usuario
-            console.log('Role:', user.role); // Agregar log de role
+
             done(null, user);
         } else {
             done(null, false);

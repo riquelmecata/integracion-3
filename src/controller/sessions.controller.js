@@ -1,5 +1,6 @@
 
 import UserManager from '../DAL/dao/userManager.js';
+import SessionDTO from '../dto/UsersDTO/session.dto.js';
 
 export const dbM = new UserManager()
 
@@ -24,4 +25,14 @@ export const signUpController= async (req, res) => {
 
     if (req.user) res.status(200).json({ result: req.user })
 
+}
+
+export const getCurrentSessionUser = async (req,res) => {
+    try {
+        const currentSession = req.session
+        const currentUser = currentSession.user
+        res.send(currentUser)
+    } catch (error) {
+        res.send(error)
+    }
 }

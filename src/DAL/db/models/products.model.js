@@ -41,6 +41,10 @@ const ProductSchema = new mongoose.Schema({
     availability: { 
         type: String, 
         enum: ['in_stock', 'out_of_stock']
+    },
+    owner: {
+        type: String,
+        default: 'admin'
     } // Campo para la disponibilidad
 
 })

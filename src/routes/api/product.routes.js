@@ -18,4 +18,4 @@ router.post('/premium', isPremium, createPremiumProduct)
 
 router.put('/:pid', isAdmin, productUpdater);
 
-router.delete('/:pid', isAdmin, productDeleter);
+router.delete('/:pid', productDeleter);

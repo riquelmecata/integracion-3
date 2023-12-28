@@ -72,16 +72,19 @@ export const createProduct = async (req, res) => {
     }
 };
 
-export const createPremiumProduct = async (req,res,next) => {
+export const createPremiumProduct = async (req, res, next) => {
     const { title, description, code, price, status, stock, category, thumbnail } = req.body;
-    const product = { title, description, code, price, status, stock, category, thumbnail }
+
     try {
         // Verificar si los campos obligatorios están presentes
         if (!title || !description || !code || !price || !stock || !category) {
             throw new Error('Todos los campos obligatorios deben estar presentes para crear el producto');
         }
 
-        // Crear el objeto del producto
+        // Obtener el correo electrónico del usuario que crea el producto (suponiendo que está disponible en req.user.email)
+        const ownerEmail = req.user.email || req.user.emailAddress; // Utiliza el correo electrónico del usuario autenticado
+
+        // Crear el objeto del producto con el correo electrónico del propietario
         const obj = {
             title,
             description,
@@ -91,6 +94,7 @@ export const createPremiumProduct = async (req,res,next) => {
             stock,
             category,
             thumbnail,
+            owner: ownerEmail, // Asigna el correo electrónico del propietario al producto
         };
 
         // Agregar el producto a la base de datos
@@ -104,8 +108,7 @@ export const createPremiumProduct = async (req,res,next) => {
         // Enviar una respuesta de error al cliente
         return res.status(500).json({ error: error.message || 'Error al crear el producto' });
     }
-}
-
+};
 export const productUpdater = async (req, res) => {
     const { pid } = req.params
     let objeChanges = { ...req.body }
@@ -140,7 +143,7 @@ export const productUpdater = async (req, res) => {
 
 }
 
-export const productDeleter = async (req, res) => {
+    export const productDeleter = async (req, res) => {
     const { pid } = req.params
 
     if (!pid) return res.status(400).json({ error: "Debe enviar un id de producto por params" })
@@ -153,6 +156,10 @@ export const productDeleter = async (req, res) => {
     }
 
 
-}
+} 
+
+
+
+
 
 export const productIdFinderDBM = dbM.getProductById
