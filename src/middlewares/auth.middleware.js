@@ -28,15 +28,14 @@ export const isLogged = (req, res, next) => {
 };
 
 
-export const isPremium = (req, res, next) =>{
-    if (req?.user?.role === "premium" || req?.user?.role === "admin"){
-        console.log(role)
-        next()
+export const isPremium = (req, res, next) => {
+    if (req?.user?.role === "premium" || req?.user?.role === "admin") {
+        next();
     } else {
         CustomError.createCustomError({
             name: ErrorsName.INVALID_ROLE,
             cause: ErrorsCause.INVALID_ROLE,
             message: ErrorsMessage.INVALID_ROLE,
-        })
+        });
     }
-}
+};

@@ -72,6 +72,40 @@ export const createProduct = async (req, res) => {
     }
 };
 
+export const createPremiumProduct = async (req,res,next) => {
+    const { title, description, code, price, status, stock, category, thumbnail } = req.body;
+    const product = { title, description, code, price, status, stock, category, thumbnail }
+    try {
+        // Verificar si los campos obligatorios están presentes
+        if (!title || !description || !code || !price || !stock || !category) {
+            throw new Error('Todos los campos obligatorios deben estar presentes para crear el producto');
+        }
+
+        // Crear el objeto del producto
+        const obj = {
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnail,
+        };
+
+        // Agregar el producto a la base de datos
+        const arrProduct = await dbM.addProduct(obj);
+
+        return res.status(200).json({ result: arrProduct });
+    } catch (error) {
+        // Manejo de errores
+        console.error(error);
+
+        // Enviar una respuesta de error al cliente
+        return res.status(500).json({ error: error.message || 'Error al crear el producto' });
+    }
+}
+
 export const productUpdater = async (req, res) => {
     const { pid } = req.params
     let objeChanges = { ...req.body }

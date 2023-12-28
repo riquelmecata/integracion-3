@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { dbM as dbInstance } from '../controller/product.controller.js';
 import { dbM as dbCart } from '../controller/cart.controller.js';
-import { isAdmin, isLogged } from "../middlewares/auth.middleware.js"
+import { isAdmin, isLogged, isPremium } from "../middlewares/auth.middleware.js"
 import { nanoid } from 'nanoid';
 import { faker } from '@faker-js/faker';
 import viewsController from '../controller/views.controller.js';
@@ -34,7 +34,7 @@ router.get("/products", isLogged, async (req, res) => {
     }
 })
 
-router.get("/products/:pid", async (req, res) => {
+router.get("/products/:pid", isLogged, async (req, res) => {
     if(!req?.user?.email) return res.redirect("/login")
     try {
         const { pid } = req.params
@@ -49,7 +49,20 @@ router.get("/products/:pid", async (req, res) => {
     }
 })
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/newProduct", isPremium, async (req, res) => { 
+
+    res.render("createProduct", {
+        title: "Crear producto",
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        role: req.user.role,
+        age: req.user.age
+
+    });
+})
+
+router.get("/carts/:cid", isLogged, async (req, res) => {
     if(!req?.user?.email) return res.redirect("/login")
     try {
         const { cid } = req.params
