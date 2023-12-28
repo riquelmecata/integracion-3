@@ -1,6 +1,5 @@
 import { Router } from "express";
 import UsersController from "../../controller/user.controller.js";
-import isPremium from "../../middlewares/isPremium.middleware.js";
 
 export const router = Router();
 

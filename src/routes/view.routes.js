@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { dbM as dbInstance } from '../controller/product.controller.js';
 import { dbM as dbCart } from '../controller/cart.controller.js';
-import { adminValidator, userValidator } from "../middlewares/auth.middleware.js"
+import { isAdmin, isLogged } from "../middlewares/auth.middleware.js"
 import { nanoid } from 'nanoid';
 import { faker } from '@faker-js/faker';
 import viewsController from '../controller/views.controller.js';
@@ -10,7 +10,7 @@ import viewsController from '../controller/views.controller.js';
 // Importar todos los routers;
 export const router = Router();
 
-router.get("/products", userValidator, async (req, res) => {
+router.get("/products", isLogged, async (req, res) => {
     if(!req?.user?.email) return res.redirect("/login")
     try {
         const { limit, page, sort } = req.query
@@ -87,7 +87,7 @@ router.get("/register", async (req, res) => {
 
 
 /** esto funciona */
-router.get("/profile", adminValidator, async (req, res) => { 
+router.get("/profile", isAdmin, async (req, res) => { 
     if(!req?.user?.email)
     {
         return res.redirect("/login")

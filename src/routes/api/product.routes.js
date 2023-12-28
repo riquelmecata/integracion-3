@@ -2,7 +2,7 @@
 
 import { Router } from 'express';
 import { getProducts, getOneProductById, createProduct, productDeleter, productUpdater } from '../../controller/product.controller.js';
-import { adminValidator } from '../../middlewares/auth.middleware.js';
+import { isAdmin } from '../../middlewares/auth.middleware.js';
 
 // Importar todos los routers;
 export const router = Router();
@@ -14,6 +14,6 @@ router.get('/:pid', getOneProductById);
 
 router.post("/", createProduct);
 
-router.put('/:pid', adminValidator, productUpdater);
+router.put('/:pid', isAdmin, productUpdater);
 
-router.delete('/:pid', adminValidator, productDeleter);
+router.delete('/:pid', isAdmin, productDeleter);

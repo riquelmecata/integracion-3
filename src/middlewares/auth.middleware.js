@@ -1,12 +1,42 @@
-export const adminValidator = (req, res, next) => {
-    console.log('req.user1:', req.user); // Verifica el valor de req.user aquí
-    if (req?.user?.role == "admin") return next();
-    return res.status(401).json({ error: "Unauthorized, only for admin" });
+import CustomError from '../services/errors/CustomError.js'
+import { ErrorsCause, ErrorsMessage, ErrorsName } from '../services/errors/enum.js'
+
+export const isAdmin = (req, res, next) => {
+    if (req?.user?.role === "admin") {
+        // Si el usuario tiene el rol de "admin"
+        next();
+    } else {
+        CustomError.createCustomError({
+            name: ErrorsName.INVALID_ROLE_ADMIN,
+            cause: ErrorsCause.INVALID_ROLE_ADMIN,
+            message: ErrorsMessage.INVALID_ROLE_ADMIN,
+        });
+    }
 };
 
-export const userValidator = (req, res, next) => {
-    console.log(req.user.role)
-    if (req?.user?.role == "user") return next()
-    return res.status(401).json({ error: "unathorized only for user" });
+export const isLogged = (req, res, next) => {
+    if (req.user || req?.session?.user?.role) {
+        // Si hay un usuario autenticado o si existe algún rol en la sesión
+        next();
+    } else {
+        CustomError.createCustomError({
+            name: ErrorsName.INVALID_SESSION,
+            cause: ErrorsCause.INVALID_SESSION,
+            message: ErrorsMessage.INVALID_SESSION,
+        });
+    }
+};
 
+
+export const isPremium = (req, res, next) =>{
+    if (req?.user?.role === "premium" || req?.user?.role === "admin"){
+        console.log(role)
+        next()
+    } else {
+        CustomError.createCustomError({
+            name: ErrorsName.INVALID_ROLE,
+            cause: ErrorsCause.INVALID_ROLE,
+            message: ErrorsMessage.INVALID_ROLE,
+        })
+    }
 }
